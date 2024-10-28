@@ -235,6 +235,8 @@ class RAttUNet(nn.Module):
     def __init__(self,img_ch=3,output_ch=1, CellNum=16, dropout=0.1):
         super(RAttUNet, self).__init__()
         
+        self.dropout = dropout
+        self.best_acc = 0
         self.Pool = nn.AvgPool2d(kernel_size=2,stride=2)
         self.dropout = nn.Dropout(dropout)
 
