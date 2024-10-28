@@ -18,6 +18,18 @@ class ConvolutionBlock(nn.Module):
         return F.relu(self.bn2(self.conv2(x)))
 
 
+class Recurrent_block(nn.Module):
+    def __init__(self,ch_out):
+        super(Recurrent_block,self).__init__()
+        self.ch_out = ch_out
+        self.conv = nn.Conv2d(ch_out,ch_out,kernel_size=3,stride=1,padding=1,bias=True)
+        self.bn = nn.BatchNorm2d(ch_out)
+
+    def forward(self,x):
+        x1 = F.relu(self.bn(self.conv(x)))
+        return F.relu(self.bn(self.conv(x + x1)))
+
+
 class Attention_block(nn.Module):
     def __init__(self, query_in, key_in, out_channels):
         
@@ -44,14 +56,13 @@ class Attention_block(nn.Module):
 class RRCNN_block(nn.Module):
     def __init__(self,ch_in,ch_out):
         super(RRCNN_block, self).__init__()
-        self.conv = nn.Conv2d(ch_out,ch_out,kernel_size=3,stride=1,padding=1,bias=True)
-        self.bn = nn.BatchNorm2d(ch_out)
+        self.rec_block1 = Recurrent_block(ch_out)
+        self.rec_block2 = Recurrent_block(ch_out)
         self.Conv_1x1 = nn.Conv2d(ch_in,ch_out,kernel_size=1,stride=1,padding=0)
 
     def forward(self,x):
         x = self.Conv_1x1(x)
-        x1 = F.relu(self.bn(self.conv(x)))
-        return x + F.relu(self.bn(self.conv(x + x1)))
+        return x+self.rec_block2(self.rec_block1(x))
 
 
 class UNet(nn.Module):
