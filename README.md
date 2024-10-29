@@ -25,9 +25,9 @@ The accuracy of each model in segmenting tumors is as follows:
 | Model                     | Accuracy |
 |---------------------------|----------|
 | U-Net                     |   96%    |
-| Recurrent U-Net           |   92%    |
+| Recurrent U-Net           |   84%    |
 | Attention U-Net           |   96%    |
-| Recurrent Attention U-Net |   87%    |
+| Recurrent Attention U-Net |   91%    |
 
 Interestingly, the simpler U-Net model achieved the best performance, likely due to the limited dataset size. Neither recurrence nor attention mechanisms appeared to improve segmentation accuracy, which may indicate that more complex architectures require larger datasets for optimal performance.
 
